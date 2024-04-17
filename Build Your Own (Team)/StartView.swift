@@ -17,11 +17,11 @@ struct StartView: View {
                     .ignoresSafeArea()
                 VStack {
                     CustomText(text: "Title (TBD)")
-                        .padding(60)
+                        .padding(68)
                     NavigationLink(destination: ContentView(), label: {
-                        Text("Start")
+                        CustomLink(link: "Tap Here")
                     })
-                        .padding(100)
+                    .padding(79)
                 }
             }
         }
@@ -36,5 +36,12 @@ struct CustomText: View {
     let text: String
     var body: some View {
         Text(text).font(Font.custom("Futura-Bold", size: 70))
+    }
+}
+
+struct CustomLink: View {
+    let link: String
+    var body: some View {
+        Text(link).font(Font.custom("", size: 40)).fontWeight(.heavy).foregroundColor(Color.black)
     }
 }
