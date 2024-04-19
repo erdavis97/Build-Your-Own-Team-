@@ -18,7 +18,7 @@ struct StartView: View {
                 VStack {
                     CustomText(text: "Title (TBD)")
                         .padding(68)
-                    NavigationLink(destination: ContentView(), label: {
+                    NavigationLink(destination: MovingBackground(), label: {
                         CustomLink(link: "Tap Here")
                     })
                     .padding(79)

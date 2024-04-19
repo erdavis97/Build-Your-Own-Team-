@@ -1,12 +1,3 @@
-//
-//  ContentView.swift
-//  Build Your Own (Team)
-//
-//  Created by Ethan Davis on 4/12/24.
-//
-
-// Ethan Scott's comment
-
 import SwiftUI
 
 struct MovingBackground: View {
@@ -24,6 +15,12 @@ struct MovingBackground: View {
                         .frame(width: geometry.size.width, height: geometry.size.height)
                         .offset(x: xOffset + CGFloat(index) * geometry.size.width, y: 0)
                 }
+                
+                Image("Tweety") // Put the name of your overlay image asset
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: geometry.size.width * 0.3, height: geometry.size.height * 0.3) // Adjust size as needed
+                    .offset(x: -geometry.size.width * 0.35, y: geometry.size.height * 0.23) // Position on the top left
             }
             .onReceive(timer) { _ in
                 xOffset -= 1 // Adjust the speed of movement by changing this value
@@ -34,19 +31,12 @@ struct MovingBackground: View {
             }
             .clipped()
         }
-    }
-}
-
-struct ContentView: View {
-    var body: some View {
-        MovingBackground()
-            .edgesIgnoringSafeArea(.all)
+        .edgesIgnoringSafeArea(.all)
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        MovingBackground()
     }
 }
-
