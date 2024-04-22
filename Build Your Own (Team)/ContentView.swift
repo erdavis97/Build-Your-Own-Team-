@@ -3,27 +3,27 @@ import SwiftUI
 struct MovingBackground: View {
     @State private var xOffset: CGFloat = 0
     
-    let timer = Timer.publish(every: 0.05, on: .main, in: .common).autoconnect()
+    let timer = Timer.publish(every: 0.05, on: .main, in: .common).autoconnect() // Creates timer
     
     var body: some View {
-        GeometryReader { geometry in
+        GeometryReader { geometry in // This geometry reader privides info on the geometry of the photos inside of it. This helps us more easily resize the images
             ZStack {
                 ForEach(0..<2) { index in
                     Image("background")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: geometry.size.width, height: geometry.size.height)
-                        .offset(x: xOffset + CGFloat(index) * geometry.size.width, y: 0)
-                }
+                        .offset(x: xOffset + CGFloat(index) * geometry.size.width, y: 0) // This allows the background to fill the whole screen and allows it to stay fullscreen when the background moves
+                } // For loop for the moving background
                 
-                Image("Tweety") // Put the name of your overlay image asset
+                Image("Character") // May be changed in final game
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: geometry.size.width * 0.3, height: geometry.size.height * 0.3) // Adjust size as needed
-                    .offset(x: -geometry.size.width * 0.35, y: geometry.size.height * 0.23) // Position on the top left
+                    .frame(width: geometry.size.width * 0.3, height: geometry.size.height * 0.3) // This adjusts how far left or right the character is
+                    .offset(x: -geometry.size.width * 0.35, y: geometry.size.height * 0.29) // This adjusts the height of the character
             }
             .onReceive(timer) { _ in
-                xOffset -= 1 // Adjust the speed of movement by changing this value
+                xOffset -= 1 // Every time the timer ticks, it moves the background over towards the left, creating the effect that its moving
                 
                 if xOffset <= -geometry.size.width {
                     xOffset = 0
@@ -31,7 +31,7 @@ struct MovingBackground: View {
             }
             .clipped()
         }
-        .edgesIgnoringSafeArea(.all)
+        .edgesIgnoringSafeArea(.all) // Makes it full screen
     }
 }
 
