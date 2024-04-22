@@ -21,7 +21,8 @@ struct MovingBackground: View {
                     .fill(.red)
                     .border(Color.black)
                     .frame(width: 70, height: 70)
-                    .position(CGPoint(x: 710.0 + Double((objPosition)), y: 310.0))
+                    .position(CGPoint(x: 890.0 + Double((objPosition)), y: 310.0))
+             //goes offscreen at x = - 35, so objPosition = -925
                 
                 Image("Character") // May be changed in final game
                     .resizable()
@@ -31,8 +32,10 @@ struct MovingBackground: View {
             }
             .onReceive(timer) { _ in
                 xOffset -= 1 // Every time the timer ticks, it moves the background over towards the left, creating the effect that its moving
-                objPosition -= 7
-                
+                objPosition -= 6
+                if objPosition <= -925 {
+                    objPosition = 0
+                }
                 if xOffset <= -geometry.size.width {
                     xOffset = 0
                 }
