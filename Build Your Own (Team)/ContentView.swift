@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MovingBackground: View {
     @State private var xOffset: CGFloat = 0
+    @State private var objPosition = 0
     
     let timer = Timer.publish(every: 0.05, on: .main, in: .common).autoconnect() // Creates timer
     
@@ -16,6 +17,12 @@ struct MovingBackground: View {
                         .offset(x: xOffset + CGFloat(index) * geometry.size.width, y: 0) // This allows the background to fill the whole screen and allows it to stay fullscreen when the background moves
                 } // For loop for the moving background
                 
+                Rectangle()
+                    .fill(.red)
+                    .border(Color.black)
+                    .frame(width: 70, height: 70)
+                    .position(CGPoint(x: 710.0 + Double((objPosition)), y: 310.0))
+                
                 Image("Character") // May be changed in final game
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -24,6 +31,7 @@ struct MovingBackground: View {
             }
             .onReceive(timer) { _ in
                 xOffset -= 1 // Every time the timer ticks, it moves the background over towards the left, creating the effect that its moving
+                objPosition -= 7
                 
                 if xOffset <= -geometry.size.width {
                     xOffset = 0
