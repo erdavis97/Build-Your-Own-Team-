@@ -2,12 +2,12 @@ import SwiftUI
 
 struct MovingBackground: View {
     @State private var xOffset: CGFloat = 0 // Position of the background that increases every time the timer ticks
-    @State private var objPosition = 0 // Position of the block that increases every time the timer ticks
+    @State private var objPosition = 0.0 // Position of the block that increases every time the timer ticks
     @State private var score = 0 // Will eventually be used to strore the score
     
     @State private var jumpOffset: CGFloat = 0 // New state variable to control the character's jump
     
-    let timer = Timer.publish(every: 0.05, on: .main, in: .common).autoconnect() // Creates timer
+    let timer = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect() // Creates timer
     
     var body: some View {
         GeometryReader { geometry in // This geometry reader provides info on the geometry of the photos inside of it. This helps us more easily resize the images
@@ -39,11 +39,10 @@ struct MovingBackground: View {
             }
             .onReceive(timer) { _ in
                 xOffset -= 1 // Every time the timer ticks, it moves the background over towards the left, creating the effect that its moving
-                objPosition -= 6
+                objPosition -= 4 // Moves object to the left every time the timer ticks
                 if objPosition <= -925 {
                     objPosition = 0
                 }
-                objPosition -= 7 // Moves object to the left every time the timer ticks
                 
                 if xOffset <= -geometry.size.width {
                     xOffset = 0
