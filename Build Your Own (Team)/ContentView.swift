@@ -3,7 +3,7 @@ import SwiftUI
 struct MovingBackground: View {
     @State private var xOffset: CGFloat = 0 // Position of the background that increases every time the timer ticks
     @State private var objPosition = 0.0 // Position of the block that increases every time the timer ticks
-    @State private var score = 0 // Will eventually be used to strore the score
+    @State var score = 0.0 // Will eventually be used to strore the score
     
     @State private var jumpOffset: CGFloat = 0 // New state variable to control the character's jump
     
@@ -37,6 +37,11 @@ struct MovingBackground: View {
                         } // When the character is tapped, it calls the jump function whih allows the character to jump
                     )
             }
+            VStack{
+                var Num = String( Int(score))
+                CustomText(text: "Score: " +  Num)
+            }
+            
             .onReceive(timer) { _ in
                 xOffset -= 1 // Every time the timer ticks, it moves the background over towards the left, creating the effect that its moving
                 objPosition -= 4 // Moves object to the left every time the timer ticks
@@ -47,6 +52,7 @@ struct MovingBackground: View {
                 if xOffset <= -geometry.size.width {
                     xOffset = 0
                 }
+                score += 0.05
             }
             .clipped()
         }
