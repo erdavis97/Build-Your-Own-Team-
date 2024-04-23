@@ -3,6 +3,8 @@ import SwiftUI
 struct MovingBackground: View {
     @State private var xOffset: CGFloat = 0 // Position of the background that increases every time the timer ticks
     @State private var objPosition = 0.0 // Position of the block that increases every time the timer ticks
+    @State private var objWidth = 50.0
+    @State private var objHeight = 50.0
     @State var score = 0.0 // Will eventually be used to strore the score
     
     @State private var jumpOffset: CGFloat = 0 // New state variable to control the character's jump
@@ -23,7 +25,7 @@ struct MovingBackground: View {
                 Rectangle()
                     .fill(Color.red)
                     .border(Color.black)
-                    .frame(width: 50, height: 50)
+                    .frame(width: objWidth, height: objHeight)
                     .position(CGPoint(x: 890.0 + Double((objPosition)), y: 322.0)) // This is our test rectangle for now that can later be swapped out for obsticals. it moves across the screen and when it exits the left side, another one comes out the right side
                 
                 Image("Character") // May be changed in final game
@@ -38,7 +40,7 @@ struct MovingBackground: View {
                     )
             }
             VStack{
-                var Num = String( Int(score))
+                var Num = String(Int(score))
                 CustomText(text: "Score: " +  Num)
             }
             
@@ -47,6 +49,7 @@ struct MovingBackground: View {
                 objPosition -= 4 // Moves object to the left every time the timer ticks
                 if objPosition <= -925 {
                     objPosition = 0
+                    setObject()
                 }
                 
                 if xOffset <= -geometry.size.width {
@@ -57,6 +60,11 @@ struct MovingBackground: View {
             .clipped()
         }
         .edgesIgnoringSafeArea(.all) // Makes it full screen
+    }
+    
+    func setObject() {
+        objWidth = Double.random(in: 25...100)
+        objHeight = Double.random(in: 25...100)
     }
     
     func jump() {
