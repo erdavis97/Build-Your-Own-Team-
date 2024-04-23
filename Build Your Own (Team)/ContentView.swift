@@ -6,6 +6,8 @@ struct MovingBackground: View {
     @State private var objWidth = 50.0
     @State private var objHeight = 50.0
     @State var score = 0.0 // Will eventually be used to strore the score
+    @State private var level = "level1"
+   
     
     @State private var jumpOffset: CGFloat = 0 // New state variable to control the character's jump
     
@@ -15,7 +17,7 @@ struct MovingBackground: View {
         GeometryReader { geometry in // This geometry reader provides info on the geometry of the photos inside of it. This helps us more easily resize the images
             ZStack {
                 ForEach(0..<2) { index in
-                    Image("background")
+                    Image(level)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: geometry.size.width, height: geometry.size.height)
@@ -41,7 +43,7 @@ struct MovingBackground: View {
             }
             VStack{
                 var Num = String(Int(score))
-                CustomText(text: "Score: " +  Num)
+                CustomText(text: "Score: " +  Num).foregroundColor(.brown)
             }
             
             .onReceive(timer) { _ in
@@ -56,6 +58,9 @@ struct MovingBackground: View {
                     xOffset = 0
                 }
                 score += 0.05
+                if score >= 100 {
+                    level = "level2"
+                }
             }
             .clipped()
         }

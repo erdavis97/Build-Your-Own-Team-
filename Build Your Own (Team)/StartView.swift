@@ -11,7 +11,7 @@ struct StartView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Image("background")
+                Image("level1")
                     .resizable(resizingMode: .stretch)
                     .aspectRatio(contentMode: .fill)
                     .ignoresSafeArea()
