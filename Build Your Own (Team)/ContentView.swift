@@ -33,21 +33,22 @@ struct MovingBackground: View {
                     .fill(Color.red)
                     .border(Color.black)
                     .frame(width: objWidth, height: objHeight)
-                    .position(CGPoint(x: 890.0 + Double((objPosition)), y: 322.0)) // This is our test rectangle for now that can later be swapped out for obsticals. it moves across the screen and when it exits the left side, another one comes out the right side
+                    .position(CGPoint(x: 890.0 + Double((objPosition)), y: 322)) // This is our test rectangle for now that can later be swapped out for obsticals. it moves across the screen and when it exits the left side, another one comes out the right side
                 
                 // below rectangles are temporary to test contact detection
                 Rectangle()
                     .fill(Color.yellow)
                     .frame(width: 1, height: 77)
-                    .position(CGPoint(x: 117.0, y: 307.0 + jumpOffset))
+                    .position(CGPoint(x: 117.0 + (objWidth / 2), y: 307.0 + jumpOffset))
                 Rectangle()
                     .fill(Color.yellow)
                     .frame(width: 1, height: 77)
-                    .position(CGPoint(x: 138.0, y: 307.0 + jumpOffset))
+                    .position(CGPoint(x: 138 - (objWidth / 2), y: 307.0 + jumpOffset))
                 Rectangle()
                     .fill(Color.yellow)
                     .frame(width: 90, height: 1)
                     .position(CGPoint(x: 128.0, y: 347.0 + jumpOffset))
+
                 //345 og, 297 top, 347 bottom, 29 width
                 // x (890 + objpos) - objwidth/2 or (890 + objpos) + objwidth/2 =/ 117 or 138
                 // y and 322 + (objheight/2) or 322 - (objheight/2) =/ 347 + jumpOffset
@@ -113,28 +114,29 @@ struct MovingBackground: View {
     }
     
     func checkYContact() {
-        if 322 + (objHeight / 2) == 347 + jumpOffset {
+        if (322 + (objHeight / 2)) == (322 + (objHeight / 2)) + jumpOffset { // checks if bottom of character touches bottom of object
             resetGame()
         }
-        else if (322 - (objHeight / 2)) == 347 + jumpOffset {
+        else if (322 - (objHeight / 2)) == 297 + jumpOffset { // checks if bottom of character touches top of object
             resetGame()
         }
     }
     
     func checkXContact() {
-        if (890 + objPosition) + (objWidth / 2) == 117 {
-            checkYContact()
-        }
-        else if (890 + objPosition) + (objWidth / 2) == 138 {
-            checkYContact()
-        }
-        else if (890 + objPosition) - (objWidth / 2) == 117 {
-            checkYContact()
-        }
-        else if (890 + objPosition) - (objWidth / 2) == 138 {
-            checkYContact()
-        }
-    }
+           if (890 + objPosition) + (objWidth / 2) == 117 + (objWidth / 2) { // checks if backside of object touches front of character
+               checkYContact()
+           }
+           if (890 + objPosition) + (objWidth / 2) == 138 - (objWidth / 2) { // checks if backside of object touches backside of character
+               checkYContact()
+           }
+           if (890 + objPosition) - (objWidth / 2) == 117 + (objWidth / 2) { // checks if frontside of object touches front of character
+               checkYContact()
+           }
+           if (890 + objPosition) - (objWidth / 2) == 138 - (objWidth / 2) { // checks if front of object touches back of character
+               checkYContact()
+           }
+       }
+    //need to figure out how to set it to check for a range, right now it only works if the corners are perfectly aligned (i think)
     
     func setObject() {
         objWidth = Double.random(in: 25...100)
@@ -143,11 +145,11 @@ struct MovingBackground: View {
     
     func jump() {
         withAnimation(.easeInOut(duration: 0.3)) { // Animation allows the character to smoothly jump on the screen
-            jumpOffset = -150 // How high the character jumps
+            jumpOffset = -175 // How high the character jumps
         }
         // Dispatch queue is used to allow the jump to happen at the time of the click and finish executing 0.35 seconds after
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { // How long the character is delayed in the air for.
-            withAnimation(.easeInOut(duration: 0.5)) { //how fast the character comes down
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { // How long the character is delayed in the air for.
+            withAnimation(.easeInOut(duration: 0.75)) { //how fast the character comes down
                 jumpOffset = 0
             }
         }
