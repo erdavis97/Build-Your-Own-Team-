@@ -18,9 +18,7 @@ struct StartView: View {
                 VStack {
                     CustomText(text: "Title (TBD)")
                         .padding(68)
-                    NavigationLink(destination: MovingBackground(), label: {
-                        CustomLink(link: "Tap Here")
-                    })
+                    NavigationLink(destination: MovingBackground(), label: {CustomLink(link: "Tap Here")})
                     .padding(79)
                 }
             }
@@ -43,5 +41,17 @@ struct CustomLink: View {
     let link: String
     var body: some View {
         Text(link).font(Font.custom("", size: 40)).fontWeight(.heavy).foregroundColor(Color.black)
+    }
+}
+
+struct CustomButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .frame(width: 50)
+            .font(Font.custom("Marker Felt", size: 24))
+            .padding()
+            .background(.red).opacity(configuration.isPressed ? 0.0 : 1.0)
+            .foregroundColor(.white)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }

@@ -1,21 +1,25 @@
 import SwiftUI
 
 struct MovingBackground: View {
+    // Background properties
     @State private var xOffset: CGFloat = 0 // Position of the background that increases every time the timer ticks
     @State private var objPosition = 0.0 // Position of the block that increases every time the timer ticks
     @State private var objWidth = 50.0
     @State private var objHeight = 50.0
-    @State var score = 0.0 // Will eventually be used to strore the score
+    @State private var score = 0.0 // Will eventually be used to strore the score
     @State private var level = "level1"
-   
     
+    // Character properties
     @State private var jumpOffset: CGFloat = 0 // New state variable to control the character's jump
     
-    let timer = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect() // Creates timer
+    // Timer properties
+    @State private var timer = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect() // Creates timer
+    @State private var speedUp = false // Creates timer
     
     var body: some View {
         GeometryReader { geometry in // This geometry reader provides info on the geometry of the photos inside of it. This helps us more easily resize the images
             ZStack {
+                // Moving background
                 ForEach(0..<2) { index in
                     Image(level)
                         .resizable()
@@ -24,6 +28,7 @@ struct MovingBackground: View {
                         .offset(x: xOffset + CGFloat(index) * geometry.size.width, y: 0) // This allows the background to fill the whole screen and allows it to stay fullscreen when the background moves
                 } // For loop for the moving background
                 
+                // Moving object
                 Rectangle()
                     .fill(Color.red)
                     .border(Color.black)
@@ -48,6 +53,9 @@ struct MovingBackground: View {
                 // y and 322 + (objheight/2) or 322 - (objheight/2) =/ 347 + jumpOffset
                 
                 
+
+                // Character
+
                 Image("Character") // May be changed in final game
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -68,17 +76,30 @@ struct MovingBackground: View {
                 xOffset -= 1 // Every time the timer ticks, it moves the background over towards the left, creating the effect that its moving
                 objPosition -= 4 // Moves object to the left every time the timer ticks
                 checkXContact()
+     
+                // Reset object position if it goes off the screen
                 if objPosition <= -925 {
                     objPosition = 0
                     setObject()
                 }
                 
+                // Reset background position if it goes off the screen
                 if xOffset <= -geometry.size.width {
                     xOffset = 0
                 }
+                
+                // Increase score
                 score += 0.05
+                // If score reaches 100, change level
                 if score >= 100 {
                     level = "level2"
+                }
+                
+                // Check if score exceeds 100 and speedUp flag is false
+                if score >= 100 && !speedUp {
+                    level = "level2"
+                    speedUp = true // Set speedUp flag to true to prevent multiple calls
+                    gameSpeed() // Update the game speed
                 }
             }
             .clipped()
@@ -130,6 +151,12 @@ struct MovingBackground: View {
                 jumpOffset = 0
             }
         }
+    }
+    
+    func gameSpeed() {
+        // Update the timer to tick faster
+
+        self.timer = Timer.publish(every: 0.008, on: .main, in: .common).autoconnect()
     }
 }
 
