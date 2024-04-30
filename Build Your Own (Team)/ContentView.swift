@@ -11,6 +11,7 @@ struct MovingBackground: View {
     
     // Character properties
     @State private var jumpOffset: CGFloat = 0 // New state variable to control the character's jump
+    @State private var canJump = true
     
     // Timer properties
     @State private var timer = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect() // Creates timer
@@ -35,25 +36,25 @@ struct MovingBackground: View {
                     .frame(width: objWidth, height: objHeight)
                     .position(CGPoint(x: 890.0 + Double((objPosition)), y: 322)) // This is our test rectangle for now that can later be swapped out for obsticals. it moves across the screen and when it exits the left side, another one comes out the right side
                 
-                // below rectangles are temporary to test contact detection
-                Rectangle()
-                    .fill(Color.yellow)
-                    .frame(width: 1, height: 77)
-                    .position(CGPoint(x: 117.0 + (objWidth / 2), y: 307.0 + jumpOffset))
-                Rectangle()
-                    .fill(Color.yellow)
-                    .frame(width: 1, height: 77)
-                    .position(CGPoint(x: 138 - (objWidth / 2), y: 307.0 + jumpOffset))
-                Rectangle()
-                    .fill(Color.yellow)
-                    .frame(width: 90, height: 1)
-                    .position(CGPoint(x: 128.0, y: 347.0 + jumpOffset))
+                // below rectangles were created to test contact detection. Left as comments just in case more testing is needed, if not delete below comments.
+               // Rectangle()
+                    // .fill(Color.yellow)
+                //.frame(width: 1, height: 77)
+                    //.position(CGPoint(x: 117.0 + (objWidth / 2), y: 307.0 + jumpOffset))
+                // Rectangle()
+                //   .fill(Color.yellow)
+                // .frame(width: 1, height: 77)
+                //  .position(CGPoint(x: 138 - (objWidth / 2), y: 307.0 + jumpOffset))
+                // Rectangle()
+                //  .fill(Color.yellow)
+                //  .frame(width: 90, height: 1)
+                //  .position(CGPoint(x: 128.0, y: 347.0 + jumpOffset))
+                //  Rectangle()
+                //  .fill(Color.yellow)
+                //   .frame(width: 1, height: 77)
+                //  .position(CGPoint(x: 150, y: 307.0))
 
-                //345 og, 297 top, 347 bottom, 29 width
-                // x (890 + objpos) - objwidth/2 or (890 + objpos) + objwidth/2 =/ 117 or 138
-                // y and 322 + (objheight/2) or 322 - (objheight/2) =/ 347 + jumpOffset
-                
-                
+    
 
                 // Character
 
@@ -64,7 +65,9 @@ struct MovingBackground: View {
                     .offset(x: -geometry.size.width * 0.35, y: geometry.size.height * 0.29 + jumpOffset) // This adjusts the height of the character
                     .gesture(
                         TapGesture().onEnded {
-                            jump()
+                            if canJump == true {
+                                jump()
+                            }
                         } // When the character is tapped, it calls the jump function whih allows the character to jump
                     )
             }
@@ -74,7 +77,7 @@ struct MovingBackground: View {
             }
             
             .onReceive(timer) { _ in
-                xOffset -= 1 // Every time the timer ticks, it moves the background over towards the left, creating the effect that its moving
+                xOffset -= 4 // Every time the timer ticks, it moves the background over towards the left, creating the effect that its moving
                 objPosition -= 4 // Moves object to the left every time the timer ticks
                 checkXContact()
      
@@ -111,6 +114,10 @@ struct MovingBackground: View {
     func resetGame() {
         score = 0
         objPosition = 0
+        objWidth = 50
+        objHeight = 50
+        level = "level1"
+        speedUp = false
     }
     
     func checkYContact() {
@@ -123,6 +130,7 @@ struct MovingBackground: View {
     }
     
     func checkXContact() {
+        disableJump()
            if (890 + objPosition) + (objWidth / 2) == 117 + (objWidth / 2) { // checks if backside of object touches front of character
                checkYContact()
            }
@@ -136,7 +144,15 @@ struct MovingBackground: View {
                checkYContact()
            }
        }
-    //need to figure out how to set it to check for a range, right now it only works if the corners are perfectly aligned (i think)
+    
+    func disableJump() {
+        if Double(objPosition) <= -710 {
+            canJump = false
+        }
+        else {
+            canJump = true
+        }
+    }
     
     func setObject() {
         objWidth = Double.random(in: 25...100)
@@ -157,7 +173,6 @@ struct MovingBackground: View {
     
     func gameSpeed() {
         // Update the timer to tick faster
-
         self.timer = Timer.publish(every: 0.008, on: .main, in: .common).autoconnect()
     }
 }
