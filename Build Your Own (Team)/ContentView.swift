@@ -6,7 +6,7 @@ struct MovingBackground: View {
     @State private var objPosition = 0.0 // Position of the block that increases every time the timer ticks
     @State private var objWidth = 50.0
     @State private var objHeight = 50.0
-    @State private var score = 0.0 // Will eventually be used to strore the score
+    @State private var score = 90.0 // Will eventually be used to strore the score
     @State private var level = "level1"
     
     // Character properties
@@ -77,7 +77,7 @@ struct MovingBackground: View {
             }
             
             .onReceive(timer) { _ in
-                xOffset -= 4 // Every time the timer ticks, it moves the background over towards the left, creating the effect that its moving
+                xOffset -= 2 // Every time the timer ticks, it moves the background over towards the left, creating the effect that its moving
                 objPosition -= 4 // Moves object to the left every time the timer ticks
                 checkXContact()
      
@@ -94,16 +94,14 @@ struct MovingBackground: View {
                 
                 // Increase score
                 score += 0.05
-                // If score reaches 100, change level
-                if score >= 100 {
-                    level = "level2"
-                }
                 
-                // Check if score exceeds 100 and speedUp flag is false
-                if score >= 100 && !speedUp {
+                if score >= 100 && score < 200 {
                     level = "level2"
-                    speedUp = true // Set speedUp flag to true to prevent multiple calls
-                    gameSpeed() // Update the game speed
+                    gameSpeedChange1() //updates game speed
+                }
+                else if score >= 200  {
+                    level = "level3"
+                    gameSpeedChange2() //updates game speed
                 }
             }
             .clipped()
@@ -117,7 +115,7 @@ struct MovingBackground: View {
         objWidth = 50
         objHeight = 50
         level = "level1"
-        speedUp = false
+        self.timer = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect()
     }
     
     func checkYContact() {
@@ -171,9 +169,13 @@ struct MovingBackground: View {
         }
     }
     
-    func gameSpeed() {
+    func gameSpeedChange1() {
         // Update the timer to tick faster
-        self.timer = Timer.publish(every: 0.008, on: .main, in: .common).autoconnect()
+        self.timer = Timer.publish(every: 0.0065, on: .main, in: .common).autoconnect()
+    }
+    func gameSpeedChange2() {
+        // Update the timer to tick faster
+        self.timer = Timer.publish(every: 0.005, on: .main, in: .common).autoconnect()
     }
 }
 
