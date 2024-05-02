@@ -18,9 +18,14 @@ struct StartView: View {
                 VStack {
                     CustomText(text: "Title (TBD)")
                         .padding(68)
-                    NavigationLink(destination: MovingBackground(), label: {CustomLink(link: "Tap Here")})
+                    NavigationLink("START GAME", destination: MovingBackground())
+                        .background(Rectangle().frame(width: 150.0, height: 50.0) .foregroundColor(.yellow).border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 2.5))
+                        .position(CGPoint(x: 470.0, y: -62.0))
                     .padding(79)
                 }
+                NavigationLink("SELECT CHARACTER", destination: SelectCharacterView())
+                .background(Rectangle().frame(width: 200.0, height: 50.0) .foregroundColor(.yellow).border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 2.5))
+                .position(CGPoint(x: 200.0, y: 250.0))
             }
         }
     }
