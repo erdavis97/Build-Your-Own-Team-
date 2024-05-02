@@ -6,7 +6,7 @@ struct MovingBackground: View {
     @State private var objPosition = 0.0 // Position of the block that increases every time the timer ticks
     @State private var objWidth = 50.0
     @State private var objHeight = 50.0
-    @State private var score = 210.0 // Will eventually be used to strore the score
+    @State private var score = 0.0 // Will eventually be used to strore the score
     @State private var level = "level1"
     
     // Character properties
@@ -30,42 +30,13 @@ struct MovingBackground: View {
                         .offset(x: xOffset + CGFloat(index) * geometry.size.width, y: 0) // This allows the background to fill the whole screen and allows it to stay fullscreen when the background moves
                         .navigationBarBackButtonHidden()
                 } // For loop for the moving background
-                
-                Button("Pause", action: {
-                    paused.toggle()
-                    canJump.toggle()
-                    pauseGame()
-                })
-                .background(Rectangle().frame(width: 65.0, height: 30.0) .foregroundColor(.yellow).border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 2.5))
-                .position(CGPoint(x: 750.0, y: 50.0))
-
-                
+            
                 // Moving object
                 Rectangle()
                     .fill(Color.red)
                     .border(Color.black)
                     .frame(width: objWidth, height: objHeight)
-                    .position(CGPoint(x: 890.0 + Double((objPosition)), y: 322)) // This is our test rectangle for now that can later be swapped out for obsticals. it moves across the screen and when it exits the left side, another one comes out the right side
-                
-                // below rectangles were created to test contact detection. Left as comments just in case more testing is needed, if not delete below comments.
-               // Rectangle()
-                    // .fill(Color.yellow)
-                //.frame(width: 1, height: 77)
-                    //.position(CGPoint(x: 117.0 + (objWidth / 2), y: 307.0 + jumpOffset))
-                // Rectangle()
-                //   .fill(Color.yellow)
-                // .frame(width: 1, height: 77)
-                //  .position(CGPoint(x: 138 - (objWidth / 2), y: 307.0 + jumpOffset))
-                // Rectangle()
-                //  .fill(Color.yellow)
-                //  .frame(width: 90, height: 1)
-                //  .position(CGPoint(x: 128.0, y: 347.0 + jumpOffset))
-                //  Rectangle()
-                //  .fill(Color.yellow)
-                //   .frame(width: 1, height: 77)
-                //  .position(CGPoint(x: 150, y: 307.0))
-
-    
+                    .position(CGPoint(x: 890.0 + Double((objPosition)), y: 322)) // This is our rectangle for now that moves across the screen and when it exits the left side, another one comes out the right side
 
                 // Character
 
@@ -81,8 +52,42 @@ struct MovingBackground: View {
                             }
                         } // When the character is tapped, it calls the jump function whih allows the character to jump
                     )
+
+                // pause button/pause screen
+                
+                if paused == false {
+                    Button("Pause", action: {
+                        paused = true
+                        canJump.toggle()
+                        pauseGame()
+                    })
+                    .background(Rectangle().frame(width: 65.0, height: 30.0) .foregroundColor(.yellow).border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 2.5))
+                    .position(CGPoint(x: 750.0, y: 50.0))
+                }
+                else if paused == true {
+                    Rectangle()
+                        .fill(Color.black)
+                        .opacity(0.7)
+                    VStack {
+                        CustomText1(text: "Paused")
+                        HStack {
+                            Button("Home    ") {
+                                resetGame()
+                            }
+                                .padding()
+                            Button("  Unpause") {
+                                paused = false
+                                pauseGame()
+                            }
+                        }
+                        .buttonStyle(CustomButtonStyle1())
+                    }
+                }
             }
-            VStack{
+            
+            // score text
+            
+            VStack {
                 var Num = String(Int(score))
                 CustomText(text: "Score: " +  Num).foregroundColor(.brown)
             }
@@ -126,6 +131,7 @@ struct MovingBackground: View {
         objWidth = 50
         objHeight = 50
         level = "level1"
+        paused = false
         self.timer = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect()
     }
     
@@ -207,8 +213,30 @@ struct MovingBackground: View {
     }
 }
 
+
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         MovingBackground()
+    }
+}
+
+struct CustomText1: View {
+    let text: String
+    var body: some View {
+        Text(text).font(Font.custom("Futura-Bold", size: 50)).fontWeight(.heavy).foregroundColor(Color.white)
+    }
+}
+struct CustomText2: View { // this will probably become a custom button
+    let text: String
+    var body: some View {
+        Text(text).font(Font.custom("Futura-Bold", size: 25)).fontWeight(.heavy).foregroundColor(Color.white)
+    }
+}
+
+struct CustomButtonStyle1: ButtonStyle {
+    func makeBody (configuration: Configuration) -> some View {
+        configuration.label
+            .frame(width: 150).font(Font.custom("Futura-Bold", size: 25))
+            .foregroundColor(.white)
     }
 }
