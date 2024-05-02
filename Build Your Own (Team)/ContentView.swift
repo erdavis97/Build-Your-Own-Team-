@@ -6,7 +6,7 @@ struct MovingBackground: View {
     @State private var objPosition = 0.0 // Position of the block that increases every time the timer ticks
     @State private var objWidth = 50.0
     @State private var objHeight = 50.0
-    @State private var score = 90.0 // Will eventually be used to strore the score
+    @State private var score = 210.0 // Will eventually be used to strore the score
     @State private var level = "level1"
     
     // Character properties
@@ -16,6 +16,7 @@ struct MovingBackground: View {
     // Timer properties
     @State private var timer = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect() // Creates timer
     @State private var speedUp = false // Creates timer
+    @State private var paused = false
     
     var body: some View {
         GeometryReader { geometry in // This geometry reader provides info on the geometry of the photos inside of it. This helps us more easily resize the images
@@ -27,7 +28,17 @@ struct MovingBackground: View {
                         .aspectRatio(contentMode: .fill)
                         .frame(width: geometry.size.width, height: geometry.size.height)
                         .offset(x: xOffset + CGFloat(index) * geometry.size.width, y: 0) // This allows the background to fill the whole screen and allows it to stay fullscreen when the background moves
+                        .navigationBarBackButtonHidden()
                 } // For loop for the moving background
+                
+                Button("Pause", action: {
+                    paused.toggle()
+                    canJump.toggle()
+                    pauseGame()
+                })
+                .background(Rectangle().frame(width: 65.0, height: 30.0) .foregroundColor(.yellow).border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 2.5))
+                .position(CGPoint(x: 750.0, y: 50.0))
+
                 
                 // Moving object
                 Rectangle()
@@ -144,7 +155,7 @@ struct MovingBackground: View {
        }
     
     func disableJump() {
-        if Double(objPosition) <= -710 {
+        if Double(objPosition) <= -707 { //once rectangle is located at 180, then character can no longer jump, decrease to give longer window to jump, increase to give shorter
             canJump = false
         }
         else {
@@ -176,6 +187,23 @@ struct MovingBackground: View {
     func gameSpeedChange2() {
         // Update the timer to tick faster
         self.timer = Timer.publish(every: 0.005, on: .main, in: .common).autoconnect()
+    }
+    
+    func pauseGame() {
+        if paused == true {
+            self.timer = Timer.publish(every: 100.0, on: .main, in: .common).autoconnect() //changes to every 100 seconds something happens
+        }
+        else if paused == false {
+            if level == "level1" {
+                self.timer = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect()
+            }
+            if level == "level2" {
+                gameSpeedChange1()
+            }
+            if level == "level3" {
+                gameSpeedChange2()
+            }
+        }
     }
 }
 
