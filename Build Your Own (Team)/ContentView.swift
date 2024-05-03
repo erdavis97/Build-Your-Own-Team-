@@ -19,6 +19,7 @@ struct MovingBackground: View {
     @State private var paused = false
     
     var body: some View {
+        NavigationStack {
         GeometryReader { geometry in // This geometry reader provides info on the geometry of the photos inside of it. This helps us more easily resize the images
             ZStack {
                 // Moving background
@@ -30,16 +31,16 @@ struct MovingBackground: View {
                         .offset(x: xOffset + CGFloat(index) * geometry.size.width, y: 0) // This allows the background to fill the whole screen and allows it to stay fullscreen when the background moves
                         .navigationBarBackButtonHidden()
                 } // For loop for the moving background
-            
+                
                 // Moving object
                 Rectangle()
                     .fill(Color.red)
                     .border(Color.black)
                     .frame(width: objWidth, height: objHeight)
                     .position(CGPoint(x: 890.0 + Double((objPosition)), y: 322)) // This is our rectangle for now that moves across the screen and when it exits the left side, another one comes out the right side
-
+                
                 // Character
-
+                
                 Image("Character") // May be changed in final game
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -52,9 +53,8 @@ struct MovingBackground: View {
                             }
                         } // When the character is tapped, it calls the jump function whih allows the character to jump
                     )
-
-                // pause button/pause screen
                 
+                // pause button/pause screen
                 if paused == false {
                     Button("Pause", action: {
                         paused = true
@@ -71,10 +71,10 @@ struct MovingBackground: View {
                     VStack {
                         CustomText1(text: "Paused")
                         HStack {
-                            Button("Home    ") {
-                                resetGame()
-                            }
-                                .padding()
+                            NavigationLink(destination: StartView(), label: {
+                                Text("Home")
+                            })
+                            .padding()
                             Button("  Unpause") {
                                 paused = false
                                 pauseGame()
@@ -96,7 +96,7 @@ struct MovingBackground: View {
                 xOffset -= 2 // Every time the timer ticks, it moves the background over towards the left, creating the effect that its moving
                 objPosition -= 4 // Moves object to the left every time the timer ticks
                 checkXContact()
-     
+                
                 // Reset object position if it goes off the screen
                 if objPosition <= -925 {
                     objPosition = 0
@@ -124,6 +124,7 @@ struct MovingBackground: View {
         }
         .edgesIgnoringSafeArea(.all) // Makes it full screen
     }
+}
     
     func resetGame() {
         score = 0

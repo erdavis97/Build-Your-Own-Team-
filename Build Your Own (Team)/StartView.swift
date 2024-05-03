@@ -15,6 +15,7 @@ struct StartView: View {
                     .resizable(resizingMode: .stretch)
                     .aspectRatio(contentMode: .fill)
                     .ignoresSafeArea()
+                    
                 VStack {
                     CustomText(text: "Title (TBD)")
                         .padding(68)
