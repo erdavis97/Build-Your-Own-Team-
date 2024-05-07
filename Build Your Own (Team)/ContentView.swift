@@ -71,7 +71,7 @@ struct MovingBackground: View {
                     VStack {
                         CustomText1(text: "Paused")
                         HStack {
-                            NavigationLink(destination: StartView(), label: {
+                            NavigationLink(destination: StartView().navigationBarBackButtonHidden(true), label: {
                                 Text("Home")
                             })
                             .padding()
