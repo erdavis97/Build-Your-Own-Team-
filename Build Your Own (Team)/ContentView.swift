@@ -41,7 +41,7 @@ struct MovingBackground: View {
                 
                 // Character
                 
-                Image("Character") // May be changed in final game
+                Image("Monkey") // May be changed in final game
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: geometry.size.width * 0.3, height: geometry.size.height * 0.3) // This adjusts how far left or right the character is
