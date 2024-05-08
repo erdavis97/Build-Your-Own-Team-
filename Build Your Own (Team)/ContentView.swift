@@ -6,12 +6,13 @@ struct MovingBackground: View {
     @State private var objPosition = 0.0 // Position of the block that increases every time the timer ticks
     @State private var objWidth = 50.0
     @State private var objHeight = 50.0
-    @State private var score = 0.0 // Will eventually be used to strore the score
+    @State private var score = 300.0 // Will eventually be used to strore the score
     @State private var level = "level1"
     
     // Character properties
     @State private var jumpOffset: CGFloat = 0 // New state variable to control the character's jump
     @State private var canJump = true
+    @State private var hasJumped = false
     
     // Timer properties
     @State private var timer = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect() // Creates timer
@@ -135,7 +136,7 @@ struct MovingBackground: View {
 }
     
     func resetGame() {
-        score = 0
+        score = 0.0
         objPosition = 0
         objWidth = 50
         objHeight = 50
@@ -145,8 +146,17 @@ struct MovingBackground: View {
     }
     
     func checkYContact() {
+        //let delay = DispatchTime.now() + 2.0
+        //DispatchQueue.main.asyncAfter(deadline: (DispatchTime.now() + 2.0)) {
         if (322 + (objHeight / 2)) == (322 + (objHeight / 2)) + jumpOffset { // checks if bottom of character touches bottom of object
-            resetGame()
+            if hasJumped == true {
+                DispatchQueue.main.asyncAfter(deadline: (DispatchTime.now() + 0.15)) {
+                    resetGame()
+                }
+            }
+            else {
+                resetGame() // delay works here
+            }
         }
         else if (322 - (objHeight / 2)) == 297 + jumpOffset { // checks if bottom of character touches top of object
             resetGame()
@@ -156,21 +166,21 @@ struct MovingBackground: View {
     func checkXContact() {
         disableJump()
            if (890 + objPosition) + (objWidth / 2) == 117 + (objWidth / 2) { // checks if backside of object touches front of character
-               checkYContact()
+                   checkYContact()
            }
            if (890 + objPosition) + (objWidth / 2) == 138 - (objWidth / 2) { // checks if backside of object touches backside of character
-               checkYContact()
+                   checkYContact()
            }
            if (890 + objPosition) - (objWidth / 2) == 117 + (objWidth / 2) { // checks if frontside of object touches front of character
-               checkYContact()
+                   checkYContact()
            }
            if (890 + objPosition) - (objWidth / 2) == 138 - (objWidth / 2) { // checks if front of object touches back of character
-               checkYContact()
+                   checkYContact()
            }
        }
     
     func disableJump() {
-        if Double(objPosition) <= -707 { //once rectangle is located at 180, then character can no longer jump, decrease to give longer window to jump, increase to give shorter
+        if Double(objPosition) <= -705 { //once rectangle is located at 180, then character can no longer jump, decrease to give longer window to jump, increase to give shorter
             canJump = false
         }
         else {
@@ -186,11 +196,16 @@ struct MovingBackground: View {
     func jump() {
         withAnimation(.easeInOut(duration: 0.3)) { // Animation allows the character to smoothly jump on the screen
             jumpOffset = -175 // How high the character jumps
+            hasJumped = true
+        
         }
         // Dispatch queue is used to allow the jump to happen at the time of the click and finish executing 0.35 seconds after
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { // How long the character is delayed in the air for.
-            withAnimation(.easeInOut(duration: 0.75)) { //how fast the character comes down
+            withAnimation(.easeInOut(duration: 0.65)) { //how fast the character comes down
                 jumpOffset = 0
+                DispatchQueue.main.asyncAfter(deadline: (DispatchTime.now() + 0.65)) {
+                    hasJumped = false
+                }
             }
         }
     }
