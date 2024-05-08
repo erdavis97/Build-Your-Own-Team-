@@ -119,9 +119,13 @@ struct MovingBackground: View {
                     level = "level3"
                     gameSpeedChange2() //updates game speed
                 }
-                else if score >= 300 {
+                else if score >= 300 && score < 400 {
                     level = "level4"
                     gameSpeedChange3()
+                }
+                else if score >= 400 {
+                    level = "level5"
+                    gameSpeedChange4()
                 }
             }
             .clipped()
@@ -200,6 +204,10 @@ struct MovingBackground: View {
         self.timer = Timer.publish(every: 0.005, on: .main, in: .common).autoconnect()
     }
     func gameSpeedChange3() {
+        // Update the timer to tick faster
+        self.timer = Timer.publish(every: 0.004, on: .main, in: .common).autoconnect()
+    }
+    func gameSpeedChange4() {
         // Update the timer to tick faster
         self.timer = Timer.publish(every: 0.0035, on: .main, in: .common).autoconnect()
     }
