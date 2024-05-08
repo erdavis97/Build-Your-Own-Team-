@@ -42,11 +42,11 @@ struct MovingBackground: View {
                 
                 // Character
                 
-                Image("Monkey") // May be changed in final game
+                Image("Evil Goblin") // May be changed in final game
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: geometry.size.width * 0.3, height: geometry.size.height * 0.3) // This adjusts how far left or right the character is
-                    .offset(x: -geometry.size.width * 0.35, y: geometry.size.height * 0.29 + jumpOffset) // This adjusts the height of the character
+                    .offset(x: -geometry.size.width * 0.35, y: geometry.size.height * 0.235 + jumpOffset) // This adjusts the height of the character
                     .gesture(
                         TapGesture().onEnded {
                             if canJump == true {

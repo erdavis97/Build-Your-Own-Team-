@@ -10,21 +10,21 @@ struct SelectView: View {
                     Spacer()
                     Image("Shelf").resizable()
                 }
-                Image("Monkey").resizable().frame(width: 150, height: 150, alignment: .topLeading).position(CGPoint(x: 100.0, y: 160.0))
+                Image("Monkey").resizable().frame(width: 90, height: 110, alignment: .topLeading).position(CGPoint(x: 100.0, y: 155.0))
                 NavigationLink("Monkey Boss", destination: StartView().navigationBarBackButtonHidden(true)).position(CGPoint(x: 100.0, y: 250.0)).onTapGesture(perform: {
                     character = "Monkey"
                     
                 })
-                Image("Warrior").resizable().frame(width: 300, height: 250, alignment: .topLeading).position(CGPoint(x: 250.0, y: 150.0))
+                Image("Warrior").resizable().frame(width: 90, height: 110, alignment: .topLeading).position(CGPoint(x: 250.0, y: 155.0))
                 NavigationLink("Warrior", destination: StartView().navigationBarBackButtonHidden(true)).position(CGPoint(x: 250.0, y: 250.0)).onTapGesture(perform: {
                     character = "Warrior"
 
                 })
-                Image("Skull Knight").resizable().frame(width: 140, height: 150, alignment: .topLeading).position(CGPoint(x: 400.0, y: 160.0))
+                Image("Skull Knight").resizable().frame(width: 90, height: 110, alignment: .topLeading).position(CGPoint(x: 400.0, y: 155.0))
                 NavigationLink("Skull Knight", destination: StartView().navigationBarBackButtonHidden(true)).position(CGPoint(x: 400.0, y: 250.0)).onTapGesture(perform: {
                     character = "Skull Knight"
                 })
-                Image("Evil Goblin").resizable().frame(width: 190, height: 200, alignment: .topLeading).position(CGPoint(x: 560.0, y: 155.0))
+                Image("Evil Goblin").resizable().frame(width: 90, height: 110, alignment: .topLeading).position(CGPoint(x: 560.0, y: 155.0))
                 NavigationLink("Evil Goblin", destination: StartView().navigationBarBackButtonHidden(true)).position(CGPoint(x: 570.0, y: 250.0)).onTapGesture(perform: {
                     character = "Evil Goblin"
                 })

@@ -22,7 +22,7 @@ struct StartView: View {
                         .position(CGPoint(x: 570.0, y: -62.0))
                     .padding(79)
                 }
-                Image("Monkey").resizable().frame(width: 300, height: 250, alignment: .topLeading).position(CGPoint(x: 370.0, y: 250.0))
+                Image("Skull Knight").resizable().frame(width: 300, height: 250, alignment: .topLeading).position(CGPoint(x: 370.0, y: 250.0))
                 NavigationLink("SELECT CHARACTER", destination: SelectView().navigationBarBackButtonHidden(true))
                 .background(Rectangle().frame(width: 200.0, height: 50.0) .foregroundColor(.yellow).border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 2.5))
                 .position(CGPoint(x: 100.0, y: 250.0))
