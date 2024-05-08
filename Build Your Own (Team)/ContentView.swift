@@ -6,7 +6,7 @@ struct MovingBackground: View {
     @State private var objPosition = 0.0 // Position of the block that increases every time the timer ticks
     @State private var objWidth = 50.0
     @State private var objHeight = 50.0
-    @State private var score = 300.0 // Will eventually be used to strore the score
+    @State private var score = 0.0 // Will eventually be used to strore the score
     @State private var level = "level1"
     
     // Character properties
@@ -42,7 +42,7 @@ struct MovingBackground: View {
                 
                 // Character
                 
-                Image("Evil Goblin") // May be changed in final game
+                Image("Monkey") // May be changed in final game
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: geometry.size.width * 0.3, height: geometry.size.height * 0.3) // This adjusts how far left or right the character is
