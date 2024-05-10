@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct MovingBackground: View {
+    @Binding var character: String // Binding to the shared @State variable
+
     // Background properties
     @State private var xOffset: CGFloat = 0 // Position of the background that increases every time the timer ticks
     @State private var objPosition = 0.0 // Position of the block that increases every time the timer ticks
@@ -41,8 +43,7 @@ struct MovingBackground: View {
                     .position(CGPoint(x: 890.0 + Double((objPosition)), y: 322)) // This is our rectangle for now that moves across the screen and when it exits the left side, another one comes out the right side
                 
                 // Character
-                
-                Image("Monkey") // May be changed in final game
+                Image(character) // May be changed in final game
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: geometry.size.width * 0.3, height: geometry.size.height * 0.3) // This adjusts how far left or right the character is
@@ -72,7 +73,7 @@ struct MovingBackground: View {
                     VStack {
                         CustomText1(text: "Paused")
                         HStack {
-                            NavigationLink(destination: StartView().navigationBarBackButtonHidden(true), label: {
+                            NavigationLink(destination: StartView(character: $character).navigationBarBackButtonHidden(true), label: {
                                 Text("Home")
                             })
                             .padding()
@@ -246,11 +247,7 @@ struct MovingBackground: View {
 }
 
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        MovingBackground()
-    }
-}
+
 
 struct CustomText1: View {
     let text: String
