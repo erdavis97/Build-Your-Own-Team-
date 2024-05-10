@@ -12,7 +12,7 @@ struct StartView: View {
                     .ignoresSafeArea()
                 
                 VStack {
-                    CustomText(text: "Title (TBD)")
+                    CustomText(text: "Happy Jump")
                         .padding(68)
                     
                     NavigationLink("START GAME", destination: MovingBackground(character: $character).navigationBarBackButtonHidden(true))

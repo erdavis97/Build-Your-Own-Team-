@@ -45,7 +45,7 @@ struct SelectView: View {
                 Text("Evil Goblin").position(CGPoint(x: 560, y: 270.0)).onTapGesture {
                     character = "Evil Goblin"
                 }
-                NavigationLink("Return to Home", destination: StartView(character: $character).navigationBarBackButtonHidden(true)).position(CGPoint(x: 325.0, y: 300.0))
+                NavigationLink("Return to Home", destination: StartView(character: $character).navigationBarBackButtonHidden(true)).position(CGPoint(x: 350.0, y: 310.0)) 
             }
         }
     }
